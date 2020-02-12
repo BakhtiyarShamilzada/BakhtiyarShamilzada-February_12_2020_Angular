@@ -2,26 +2,48 @@
 <div class="container">
     <div class="row justify-content-center mt-5">
         <div class="col-6">
-            <h3 class="bg-info text-white p-3">{{user}} To Do List</h3>
+            <h3 class="bg-info text-white p-3">{{getName()}} To Do List</h3>
             <div class="input-group">
-                <input type="text" class="form-control">
+                <input type="text" #todoText class="form-control">
                 <div class="input-group-append">
-                    <button class="btn btn-info">Add</button>
+                    <button class="btn btn-info" (click) = "addItem(todoText.value); todoText.value = ''">Add</button>
                 </div>
             </div>
-            <table class="table table-bordered table-striped table-hover mt-3">
+
+            <div class="custom-control custom-checkbox my-3">
+                <input type="checkbox" [(ngModel)]="isDisplay" id="display-all" class="custom-control-input">
+                <label for="display-all" class="custom-control-label">Display all</label>
+            </div>
+
+            <table class="table table-bordered table-striped table-hover">
                 <thead>
                     <tr>
+                        <th>No</th>
                         <th>Description</th>
+                        <th>Change</th>
                         <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="let item of items">
+                    <tr *ngFor="let item of getItems(); let i = index">
+                        <td>{{i + 1}}</td>
                         <td>{{item.description}}</td>
-                        <td>{{item.action}}</td>
+                        <td>
+                            <div class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input" id="customCheck{{i}}" [(ngModel)]="item.action">
+                                <label class="custom-control-label" for="customCheck{{i}}">Check</label>
+                            </div>
+                        </td>
+                        <td [ngSwitch]="item.action">
+                            <span *ngSwitchCase="true">
+                                Yes
+                            </span>
+                            <span *ngSwitchCase="false">
+                                No
+                            </span>
+                        </td>
                     </tr>
-                    
+
                 </tbody>
             </table>
         </div>
